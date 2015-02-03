@@ -1,0 +1,17 @@
+{
+  "name": "exemd-pn",
+  "version": "0.1.1",
+  "description": "Dot driver for petri nets",
+  "main": "./index.js",
+  "keywords": [],
+  "author": "Vittorio Zaccaria",
+  "license": "BSD",
+  "dependencies": {
+    "docopt": "~0.4.1",
+    "uid": "0.0.2",
+    "bluebird": "~2.3.11",
+    "shelljs": "~0.3.0",
+    "debug": "~2.1.1",
+    "xyz": "~0.5.0"
+  }
+}
