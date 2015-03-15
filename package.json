@@ -1,7 +1,7 @@
 {
   "name": "exemd-pn",
   "version": "0.1.1",
-  "description": "Dot driver for petri nets",
+  "description": "Exemd driver for petri nets graphs",
   "main": "./index.js",
   "keywords": [],
   "author": "Vittorio Zaccaria",

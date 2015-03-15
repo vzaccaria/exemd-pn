@@ -14,9 +14,9 @@ global.api = ->
 
 var nodes
 var arcs
+var labels
 
-nodes := {}
-arcs := [ ] 
+
 
 global.label = (n) ->
   discs = (n.match(/\*/g) || []).length
@@ -24,14 +24,17 @@ global.label = (n) ->
   debug "#n - #discs"
   if discs > 0
     return "label=\"&\#9679;\""
-  else 
+  else
     if usename > 0
       return "label=\"#{n.replace(/\!/g, "")}\""
     else
       return "label=\"\""
 
 circle = (n) ->
-  "[ fixedsize=true, #{label(n)}, width=0.3, shape=\"circle\" ]"
+  if labels[n]?
+    "[ fontsize=12, xlabel=\"#{labels[n]}\", fixedsize=true, #{label(n)}, width=0.3, shape=\"circle\" ]"
+  else
+    "[ fontsize=12, fixedsize=true, #{label(n)}, width=0.3, shape=\"circle\" ]"
 
 global.connect = (a,b) ->
         c = uid(3)
@@ -42,8 +45,8 @@ global.connect = (a,b) ->
           nodes[n] := circle(n)
           arcs := arcs ++ [ { source: n, dest: c } ]
 
-        nodes[b] := circle(n)
-        nodes[c] := "[ style=\"filled\", fillcolor=black, label=\"\", shape=\"rectangle\", width=0.5,  height=0.03 ]"
+        nodes[b] := circle(b)
+        nodes[c] := "[ style=\"filled\", fillcolor=black, label=\"\", shape=\"rectangle\", width=0.03,  height=0.5 ]"
         arcs := arcs ++ [ { source: c, dest: b } ]
 
         debug arcs
@@ -52,24 +55,28 @@ global.connect = (a,b) ->
 global.generate = ->
     debug nodes
     s = ""
-    for name, value of nodes 
-      s := s + " \"#name\" #value \n " 
+    for name, value of nodes
+      s := s + " \"#name\" #value \n "
 
-    for x in arcs 
+    for x in arcs
         s := s + " \"#{x.source}\" -> \"#{x.dest}\" [ arrowsize=0.5 ] \n"
 
     debug s
     return s;
 
-
+global.add-x-label = (name, value) ->
+    labels[name] = value
 
 gen-dot = (code) ->
+  nodes := {}
+  labels := {}
+  arcs := [ ]
   debug "compiling #code"
   code =  """
           #code
           return \"\"\"
               digraph g {
-                graph [];
+                graph [ nodesep="1", ranksep="0.7", rankdir="LR" ];
                 \#{generate!}
               }
           \"\"\"
@@ -87,14 +94,14 @@ _module = ->
 
     process = (block, opts) ->
 
-      default-is-svg = { 
+      default-is-svg = {
 
-         cmd: (block, tmp-file, tmp-dir, params) -> 
+         cmd: (block, tmp-file, tmp-dir, params) ->
             block = gen-dot(block)
             block.to("#tmp-dir/#tmp-file.dot")
             return "dot -Tsvg #params '#tmp-dir/#tmp-file.dot'"
 
-         output: (tmp-file, tmp-dir, output) -> output 
+         output: (tmp-file, tmp-dir, output) -> output
          }
 
       targets = {
@@ -104,12 +111,12 @@ _module = ->
         svg: default-is-svg
         png: {
 
-          cmd: (block, tmp-file, tmp-dir, params) -> 
+          cmd: (block, tmp-file, tmp-dir, params) ->
                block = gen-dot(block)
                block.to("#tmp-dir/#tmp-file.dot")
                return "dot -Tpng #params '#tmp-dir/#tmp-file.dot' | base64"
 
-          output: (tmp-file, tmp-dir, output) -> '\n <img class="exemd--diagram exemd--diagram__dot" src="data:image/png;base64,' + output + '" /> \n'  
+          output: (tmp-file, tmp-dir, output) -> '\n <img class="exemd--diagram exemd--diagram__dot" src="data:image/png;base64,' + output + '" /> \n'
         }
 
         pdf: {
@@ -132,7 +139,7 @@ _module = ->
              return "![](#fname)"
 
         }
-        
+
       }
 
       opts.plugin-template(targets, block, opts)
@@ -140,17 +147,7 @@ _module = ->
     iface = {
       process: process
     }
-              
+
     return iface
-               
+
 module.exports = _module()
-
-
-
-
-
-
-
-
-
-
