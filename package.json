@@ -13,7 +13,11 @@
     "docopt": "~0.4.1",
     "lodash": "^3.0.1",
     "shelljs": "~0.3.0",
-    "uid": "0.0.2",
+    "uid": "0.0.2"
+  },
+  "devDependencies": {
+    "verb": "*", 
+    "verb-cli": "*",
     "xyz": "~0.5.0"
   }
 }
