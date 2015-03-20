@@ -51,14 +51,14 @@ transition:
     connect(["p1*", "p2"] ,"p3")
     ```
 
+    which generates:
+
+![](https://dl.dropboxusercontent.com/u/5867765/tools/exemd/f-dot-2.pdf.png)
+
 Author
 ------
 
-
-**Vittorio Zaccaria**
- 
-+ [github/vzaccaria](https://github.com/vzaccaria)
-+ [twitter/vzaccaria](http://twitter.com/vzaccaria) 
+* Vittorio Zaccaria
 
 License
 -------

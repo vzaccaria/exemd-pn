@@ -54,7 +54,7 @@ transition:
 Author
 ------
 
-{%= include("author") %}
+* Vittorio Zaccaria
 
 License
 -------
