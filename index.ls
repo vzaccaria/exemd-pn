@@ -41,13 +41,19 @@ global.connect = (a,b) ->
         if not _.is-array(a)
           a := [ a ]
 
+        if not _.is-array(b)
+          b := [ b ]
+
         for n in a
           nodes[n] := circle(n)
           arcs := arcs ++ [ { source: n, dest: c } ]
 
-        nodes[b] := circle(b)
+        for m in b
+          nodes[m] := circle(m)
+          arcs := arcs ++ [ { source: c, dest: m } ]
+
         nodes[c] := "[ style=\"filled\", fillcolor=black, label=\"\", shape=\"rectangle\", width=0.03,  height=0.5 ]"
-        arcs := arcs ++ [ { source: c, dest: b } ]
+
 
         debug arcs
         debug nodes

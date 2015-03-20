@@ -25,16 +25,27 @@ Will generate this:
 
 ![](https://dl.dropboxusercontent.com/u/5867765/tools/exemd/f-dot-0.pdf.png)
 
-You can also add external labels to nodes, such as in:
+You can also add external labels to nodes with `add-x-label`, such as
+in:
 
     ```{pn !}
-    add-x-label("invoked*", "bindx\ninvoked")
-    connect(["invoked*", "p*"] ,"x_has_value")
+    add-x-label("p1*", "p1")
+    add-x-label("p2*", "p2")
+    add-x-label("p3*", "p3")
+    connect(["p1*", "p2*"] ,"p3")
     ```
 
 which generates:
 
 ![](https://dl.dropboxusercontent.com/u/5867765/tools/exemd/f-dot-1.pdf.png)
+
+You can also have an array of node names as a destination of a
+transition:
+
+    ```{pn !}
+    connect(["p0*", "p*"] ,["p1*", "p2"])
+    connect(["p1*", "p2"] ,"p3")
+    ```
 
 Author
 ------
